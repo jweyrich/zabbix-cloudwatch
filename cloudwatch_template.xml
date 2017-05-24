@@ -664,8 +664,8 @@
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>cloudwatch.metric[600,CPUUtilization,AWS/RDS,Average,{$REGION},DBInstanceIdentifier={#RDS_ID},{$ACCOUNT}]</key>
-                            <delay>600</delay>
+                            <key>cloudwatch.metric[60,CPUUtilization,AWS/RDS,Average,{$REGION},DBInstanceIdentifier={#RDS_ID},{$ACCOUNT}]</key>
+                            <delay>60</delay>
                             <history>90</history>
                             <trends>365</trends>
                             <status>0</status>
@@ -708,8 +708,8 @@
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>cloudwatch.metric[600,FreeStorageSpace,AWS/RDS,Average,{$REGION},DBInstanceIdentifier={#RDS_ID},{$ACCOUNT}]</key>
-                            <delay>600</delay>
+                            <key>cloudwatch.metric[60,FreeStorageSpace,AWS/RDS,Average,{$REGION},DBInstanceIdentifier={#RDS_ID},{$ACCOUNT}]</key>
+                            <delay>60</delay>
                             <history>90</history>
                             <trends>365</trends>
                             <status>0</status>
@@ -753,7 +753,7 @@
                             <multiplier>0</multiplier>
                             <snmp_oid/>
                             <key>freepercent[{#RDS_ID}]</key>
-                            <delay>600</delay>
+                            <delay>60</delay>
                             <history>90</history>
                             <trends>365</trends>
                             <status>0</status>
@@ -770,7 +770,7 @@
                             <snmpv3_privpassphrase/>
                             <formula>1</formula>
                             <delay_flex/>
-                            <params>last(&quot;cloudwatch.metric[600,FreeStorageSpace,AWS/RDS,Average,{$REGION},DBInstanceIdentifier={#RDS_ID},{$ACCOUNT}]&quot;)/({#STORAGE}/100)</params>
+                            <params>last(&quot;cloudwatch.metric[60,FreeStorageSpace,AWS/RDS,Average,{$REGION},DBInstanceIdentifier={#RDS_ID},{$ACCOUNT}]&quot;)/({#STORAGE}/100)</params>
                             <ipmi_sensor/>
                             <data_type>0</data_type>
                             <authtype>0</authtype>
