@@ -1,0 +1,67 @@
+#!/usr/bin/python
+from discovery.aws_client import AWSClient
+import ConfigParser
+import datetime
+import argparse
+import os
+
+
+# rds.describe[DBInstanceStatus,{#RDS_ID},{$REGION},{$ACCOUNT}]
+class Describer(AWSClient):
+    def get_attribute(self, attribute, instance_id):
+        result = self.client.describe_db_instances(
+            DBInstanceIdentifier=instance_id)
+
+        # We use only the first DBInstance from the list
+        # Return -1 if there are no DBInstances
+        if len(result["DBInstances"]) > 0:
+            ret_val = result["DBInstances"][0]["DBInstanceStatus"]
+        else:
+            ret_val = -1
+
+        if self.debug:
+            print result
+
+        return ret_val
+
+    @property
+    def debug(self):
+        return self._debug
+
+    @debug.setter
+    def debug(self, value):
+        self._debug = value
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Gets metrics from CW")
+    parser.add_argument("--attribute", dest="attribute",
+                        help="Name of the attribute to retrieve",
+                        required=True, type=str)
+    parser.add_argument("--instance_id", dest="instance_id",
+                        help="DB instance identifier",
+                        required=True, type=str)
+    parser.add_argument("--region", dest="region",
+                        help="DB instance region",
+                        required=True, type=str)
+    parser.add_argument("--account", dest="account",
+                        help="DB instance account",
+                        required=True, type=str)
+    parser.add_argument("--config", dest="config",
+                        help="Optional path to config file",
+                        required=False, type=str)
+    parser.add_argument("--debug", dest="debug",
+                        help="Debug flag",
+                        required=False)
+    args = parser.parse_args()
+
+    default_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+        "conf", "aws.conf")
+    conf_file = args.config if args.config else default_path
+    config = ConfigParser.ConfigParser()
+    config.readfp(open(conf_file))
+    describer = Describer(config, args.account, "rds", args.region)
+    describer.debug = args.debug
+
+    print describer.get_attribute(attribute=args.attribute,
+                                  instance_id=args.instance_id)

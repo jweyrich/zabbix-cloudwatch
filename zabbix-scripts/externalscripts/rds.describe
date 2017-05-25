@@ -1,0 +1,4 @@
+#!/bin/bash
+ZABBIX_HOME=/usr/lib/zabbix/scripts
+cd $ZABBIX_HOME
+./rds.describe --attribute $1 --instance_id $2 --region $3 --account $4
