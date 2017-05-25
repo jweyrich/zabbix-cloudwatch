@@ -30,7 +30,13 @@ class Checker(AWSClient):
         # This is a dirty hack, because CW returns bytes in float
         # This can be a problem, because RDS instances can be huge
         # and overflow Zabbix DB floating point data type
-        if metric == "FreeStorageSpace":
+        BYTE_ATTRIBUTES = [
+            "BinLogDiskUsage",
+            "FreeableMemory",
+            "FreeStorageSpace",
+            "SwapUsage"
+        ]
+        if metric in BYTE_ATTRIBUTES:
             ret_val = int(ret_val)
         return ret_val
 
