@@ -63,7 +63,7 @@ if __name__ == "__main__":
                         help="Instance region",
                         required=True)
     parser.add_argument("--account", dest="account",
-                        help="Instance account`",
+                        help="Instance account",
                         required=True)
     parser.add_argument("--config", dest="config",
                         help="Optional path to config file",
