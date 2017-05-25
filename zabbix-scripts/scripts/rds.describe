@@ -1,7 +1,6 @@
 #!/usr/bin/python
 from discovery.aws_client import AWSClient
 import ConfigParser
-import datetime
 import argparse
 import os
 
