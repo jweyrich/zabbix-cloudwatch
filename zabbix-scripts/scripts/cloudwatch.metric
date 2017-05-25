@@ -11,6 +11,16 @@ class Checker(AWSClient):
         # Constructing timestamps for limiting CloudWatch datapoint list
         end_time = datetime.datetime.utcnow()
         start_time = end_time - datetime.timedelta(seconds=interval)
+
+        # Strip off seconds and microseconds
+        end_time = end_time.replace(second=0, microsecond=0)
+        start_time = start_time.replace(second=0, microsecond=0)
+
+        # Subtract 2 minutes to make sure the corresponding
+        # data sample is available.
+        end_time = end_time - datetime.timedelta(minutes=2)
+        start_time = start_time - datetime.timedelta(minutes=2)
+
         result = self.client.get_metric_statistics(
                 Namespace=namespace,
                 MetricName=metric,
