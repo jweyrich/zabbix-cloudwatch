@@ -32,22 +32,18 @@ class Checker(AWSClient):
         # We use only the first datapoint from list
         # Return -1 if there are no datapoints
         if len(result["Datapoints"]) > 0:
-            ret_val = result["Datapoints"][0][statistic]
+            datapoint = result["Datapoints"][0]
+            # This is a dirty hack, because CW returns bytes in float
+            # This can be a problem, because RDS instances can be huge
+            # and overflow Zabbix DB floating point data type
+            if datapoint["Unit"] == "Bytes":
+                ret_val = int(datapoint[statistic])
         else:
             ret_val = -1
+
         if self.debug:
             print result
-        # This is a dirty hack, because CW returns bytes in float
-        # This can be a problem, because RDS instances can be huge
-        # and overflow Zabbix DB floating point data type
-        BYTE_ATTRIBUTES = [
-            "BinLogDiskUsage",
-            "FreeableMemory",
-            "FreeStorageSpace",
-            "SwapUsage"
-        ]
-        if metric in BYTE_ATTRIBUTES:
-            ret_val = int(ret_val)
+
         return ret_val
 
     @property
